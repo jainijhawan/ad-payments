@@ -34,7 +34,7 @@ class AddPaymentViewModel: ObservableObject {
         }
         
         if !isValidURL(trimmedURL) {
-            return .failure("URL must be a valid http:// or https:// format.")
+            return .failure("Please enter a valid URL (e.g., https://www.example.com)")
         }
         
         return .success(trimmedName, trimmedURL)
@@ -49,8 +49,49 @@ class AddPaymentViewModel: ObservableObject {
             return false
         }
         
-        // Check if it's a valid URL
-        guard let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) else {
+        // Check if it's a valid URL structure
+        guard let url = URL(string: urlString) else {
+            return false
+        }
+        
+        // Ensure the URL has a valid host
+        guard let host = url.host, !host.isEmpty else {
+            return false
+        }
+        
+        // Check if host contains at least one dot (for TLD)
+        guard host.contains(".") else {
+            return false
+        }
+        
+        // Split host by dots to validate domain structure
+        let hostComponents = host.components(separatedBy: ".")
+        
+        // Must have at least 2 components (domain + TLD)
+        guard hostComponents.count >= 2 else {
+            return false
+        }
+        
+        // Check that no component is empty and each has valid characters
+        for component in hostComponents {
+            guard !component.isEmpty,
+                  component.allSatisfy({ $0.isLetter || $0.isNumber || $0 == "-" }),
+                  !component.hasPrefix("-"),
+                  !component.hasSuffix("-") else {
+                return false
+            }
+        }
+        
+        // Check that TLD (last component) is at least 2 characters and contains only letters
+        let tld = hostComponents.last!
+        guard tld.count >= 2, tld.allSatisfy({ $0.isLetter }) else {
+            return false
+        }
+        
+        // Additional validation using URL components
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              components.scheme != nil,
+              components.host != nil else {
             return false
         }
         

@@ -20,12 +20,13 @@ struct AddPaymentView: View {
                 Section {
                     TextField("Name", text: $viewModel.name)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .keyboardType(.asciiCapable)
                     
                     TextField("URL", text: $viewModel.url)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .keyboardType(.URL)
                         .autocapitalization(.none)
                         .autocorrectionDisabled()
+                        .keyboardType(.asciiCapable)
                 }
                 
                 Section {

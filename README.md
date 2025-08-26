@@ -51,7 +51,12 @@ Jai Nijhawan- Ad Payments/
 
 ## Validation Rules
 - **Name Field**: Cannot be blank (trimmed for whitespace)
-- **URL Field**: Must start with `http://` or `https://` and be a valid URL format
+- **URL Field**: Must be a properly formatted URL with valid domain structure:
+  - Must start with `http://` or `https://`
+  - Must contain a valid domain with proper TLD (e.g., `.com`, `.org`)
+  - Domain components must contain only letters, numbers, and hyphens
+  - Examples: `https://www.google.com`, `http://example.org`
+  - Invalid examples: `http://google`, `https://invalid.`, `http://test`
 - **Error Handling**: User-friendly alerts for validation failures and save errors
 
 ## Build Requirements
