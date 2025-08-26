@@ -57,14 +57,6 @@ Jai Nijhawan- Ad Payments/
 - **Edit Payment/**: Form-based modal for updating existing payment entries
 - **Services/**: Core Data stack management and business logic operations
 
-### MVVM Architecture Benefits
-- **Separation of Concerns**: Business logic separated from UI code
-- **Testability**: ViewModels can be unit tested independently
-- **Reactive UI**: @Published properties automatically update the interface
-- **Async Operations**: Modern async/await pattern for database operations
-- **State Management**: Centralized state handling with loading and error states
-- **Maintainability**: Clear code organization and responsibilities
-
 ## Validation Rules
 - **Name Field**: Cannot be blank (trimmed for whitespace)
 - **URL Field**: Must start with `http://` or `https://` and be a valid URL format
@@ -77,45 +69,6 @@ Jai Nijhawan- Ad Payments/
 - **Responsive Layout**: Adaptive spacing and sizing for different screen sizes
 - **Professional Appearance**: Clean, minimalist design with proper visual hierarchy
 
-## Time Spent
-**Total Time**: ~4 hours
-
-### Breakdown:
-- **Planning & Setup** (30 minutes): Project analysis, architecture planning
-- **Core Data Implementation** (45 minutes): Model creation, persistence controller
-- **UI Development** (60 minutes): Main screen, Add/View/Edit dialogs
-- **Validation & Error Handling** (20 minutes): Input validation, user feedback
-- **MVVM Refactoring** (90 minutes): Implementing ViewModels, async operations, state management
-- **Project Restructuring** (15 minutes): Feature-based folder organization
-- **Testing & Polish** (20 minutes): UI refinements, testing edge cases
-
-## Limitations & Future Improvements
-
-### Current Limitations:
-1. **URL Validation**: Basic validation that checks format but doesn't verify reachability
-2. **No Search/Filter**: No search functionality in the View Payments list
-3. **Limited Sorting**: Only alphabetical sorting by name
-4. **No Backup**: No cloud sync or backup functionality
-
-### Potential Improvements:
-1. **Enhanced URL Validation**: Network reachability checks
-2. **Search & Filter**: Text search and category filtering
-3. **Data Export**: CSV/JSON export functionality
-4. **Cloud Sync**: iCloud integration for cross-device synchronization
-5. **Analytics**: Usage tracking and statistics
-6. **Bulk Operations**: Multi-select and bulk delete/edit
-7. **Categories**: Payment categorization system
-8. **Dark Mode**: Enhanced dark mode support with custom colors
-
-## Testing
-The app has been tested for:
-- ✅ Add new payment entries with valid data
-- ✅ Validation error messages for invalid inputs
-- ✅ View and edit existing entries
-- ✅ Data persistence across app launches
-- ✅ Delete functionality in list view
-- ✅ Empty state handling
-
 ## Build Requirements
 - iOS 15.0+
 - Xcode 14.0+
@@ -125,7 +78,3 @@ The app has been tested for:
 1. Open `Jai Nijhawan- Ad Payments.xcodeproj` in Xcode
 2. Select target device or simulator
 3. Build and run the project
-
----
-
-*Developed by Jai Nijhawan as part of iOS Developer Technical Test*
