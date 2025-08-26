@@ -21,7 +21,7 @@ class EditPaymentViewModel: ObservableObject {
     private let payment: AdPayment
     private let persistenceController: PersistenceController
     
-    init(payment: AdPayment, persistenceController: PersistenceController = PersistenceController.shared) {
+    init(payment: AdPayment, persistenceController: PersistenceController) {
         self.payment = payment
         self.persistenceController = persistenceController
         

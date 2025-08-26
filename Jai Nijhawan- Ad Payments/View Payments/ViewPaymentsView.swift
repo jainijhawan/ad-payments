@@ -10,7 +10,9 @@ import CoreData
 
 struct ViewPaymentsView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = ViewPaymentsViewModel()
+    @StateObject private var viewModel = ViewPaymentsViewModel(
+        persistenceController: PersistenceController.shared
+    )
     
     var body: some View {
         NavigationView {

@@ -16,7 +16,12 @@ struct EditPaymentView: View {
     
     init(payment: AdPayment) {
         self.payment = payment
-        self._viewModel = StateObject(wrappedValue: EditPaymentViewModel(payment: payment))
+        self._viewModel = StateObject(
+            wrappedValue: EditPaymentViewModel(
+                payment: payment,
+                persistenceController: PersistenceController.shared
+            )
+        )
     }
     
     var body: some View {

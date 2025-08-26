@@ -9,7 +9,9 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @StateObject private var viewModel = ContentViewModel()
+    @StateObject private var viewModel = ContentViewModel(
+        persistenceController: PersistenceController.shared
+    )
     
     var body: some View {
         NavigationView {

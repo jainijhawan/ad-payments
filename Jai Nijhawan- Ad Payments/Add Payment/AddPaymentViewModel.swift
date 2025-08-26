@@ -20,7 +20,7 @@ class AddPaymentViewModel: ObservableObject {
     
     private let persistenceController: PersistenceController
     
-    init(persistenceController: PersistenceController = PersistenceController.shared) {
+    init(persistenceController: PersistenceController) {
         self.persistenceController = persistenceController
     }
     
