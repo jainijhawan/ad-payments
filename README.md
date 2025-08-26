@@ -3,6 +3,11 @@
 ## Overview
 A native iOS app built with SwiftUI that allows users to manage ad payment entries with persistent storage using Core Data.
 
+## Demo Video
+
+https://github.com/user-attachments/assets/e9941aae-3b65-4b47-8274-325ebce9d620
+
+
 ## Features
 - **Main Screen**: Clean interface with "Ad payments" title and two main action buttons
 - **Add Payments**: Modal dialog for creating new payment entries with validation
