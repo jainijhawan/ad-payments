@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 import SwiftUI
+import Combine
 
 @MainActor
 class ViewPaymentsViewModel: ObservableObject {
