@@ -9,9 +9,7 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-    @State private var showingAddDialog = false
-    @State private var showingViewDialog = false
+    @StateObject private var viewModel = ContentViewModel()
     
     var body: some View {
         NavigationView {
@@ -28,7 +26,7 @@ struct ContentView: View {
                 // Buttons
                 VStack(spacing: 20) {
                     Button(action: {
-                        showingAddDialog = true
+                        viewModel.showAddDialog()
                     }) {
                         Text("Add")
                             .font(.title2)
@@ -41,7 +39,7 @@ struct ContentView: View {
                     }
                     
                     Button(action: {
-                        showingViewDialog = true
+                        viewModel.showViewDialog()
                     }) {
                         Text("View")
                             .font(.title2)
@@ -62,13 +60,13 @@ struct ContentView: View {
                 Spacer()
             }
             .padding()
-            .sheet(isPresented: $showingAddDialog) {
+            .sheet(isPresented: $viewModel.showingAddDialog) {
                 AddPaymentView()
-                    .environment(\.managedObjectContext, viewContext)
+                    .environment(\.managedObjectContext, viewModel.viewContext)
             }
-            .sheet(isPresented: $showingViewDialog) {
+            .sheet(isPresented: $viewModel.showingViewDialog) {
                 ViewPaymentsView()
-                    .environment(\.managedObjectContext, viewContext)
+                    .environment(\.managedObjectContext, viewModel.viewContext)
             }
         }
     }
@@ -76,5 +74,4 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }

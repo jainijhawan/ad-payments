@@ -9,24 +9,24 @@ import SwiftUI
 import CoreData
 
 struct EditPaymentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
     
     let payment: AdPayment
+    @StateObject private var viewModel: EditPaymentViewModel
     
-    @State private var name = ""
-    @State private var url = ""
-    @State private var showingAlert = false
-    @State private var alertMessage = ""
+    init(payment: AdPayment) {
+        self.payment = payment
+        self._viewModel = StateObject(wrappedValue: EditPaymentViewModel(payment: payment))
+    }
     
     var body: some View {
         NavigationView {
             Form {
                 Section {
-                    TextField("Name", text: $name)
+                    TextField("Name", text: $viewModel.name)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     
-                    TextField("URL", text: $url)
+                    TextField("URL", text: $viewModel.url)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .keyboardType(.URL)
                         .autocapitalization(.none)
@@ -34,16 +34,31 @@ struct EditPaymentView: View {
                 }
                 
                 Section {
-                    Button(action: updatePayment) {
-                        Text("Save")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 12)
-                            .background(Color.blue)
-                            .cornerRadius(8)
+                    Button(action: {
+                        Task {
+                            let success = await viewModel.updatePayment()
+                            if success {
+                                dismiss()
+                            }
+                        }
+                    }) {
+                        HStack {
+                            if viewModel.isLoading {
+                                ProgressView()
+                                    .scaleEffect(0.8)
+                                    .foregroundColor(.white)
+                            }
+                            Text("Save")
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.white)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(Color.blue)
+                        .cornerRadius(8)
                     }
+                    .disabled(viewModel.isLoading)
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets())
                 }
@@ -53,68 +68,17 @@ struct EditPaymentView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
+                        viewModel.resetToOriginal()
                         dismiss()
                     }
                 }
             }
-            .alert("Error", isPresented: $showingAlert) {
+            .alert("Error", isPresented: $viewModel.showingAlert) {
                 Button("OK") { }
             } message: {
-                Text(alertMessage)
-            }
-            .onAppear {
-                // Populate fields with existing data
-                name = payment.name ?? ""
-                url = payment.url ?? ""
+                Text(viewModel.alertMessage)
             }
         }
-    }
-    
-    private func updatePayment() {
-        // Validation
-        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
-        let trimmedURL = url.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        if trimmedName.isEmpty {
-            alertMessage = "Name cannot be blank."
-            showingAlert = true
-            return
-        }
-        
-        if !isValidURL(trimmedURL) {
-            alertMessage = "URL must be a valid http:// or https:// format."
-            showingAlert = true
-            return
-        }
-        
-        // Update Core Data
-        payment.name = trimmedName
-        payment.url = trimmedURL
-        
-        do {
-            try viewContext.save()
-            dismiss()
-        } catch {
-            alertMessage = "Failed to update payment. Please try again."
-            showingAlert = true
-        }
-    }
-    
-    private func isValidURL(_ urlString: String) -> Bool {
-        guard !urlString.isEmpty else { return false }
-        
-        // Check if URL starts with http:// or https://
-        let lowercaseURL = urlString.lowercased()
-        guard lowercaseURL.hasPrefix("http://") || lowercaseURL.hasPrefix("https://") else {
-            return false
-        }
-        
-        // Check if it's a valid URL
-        guard let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) else {
-            return false
-        }
-        
-        return true
     }
 }
 
@@ -126,5 +90,4 @@ struct EditPaymentView: View {
     samplePayment.url = "https://example.com"
     
     return EditPaymentView(payment: samplePayment)
-        .environment(\.managedObjectContext, context)
 }

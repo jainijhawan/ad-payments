@@ -9,21 +9,13 @@ import SwiftUI
 import CoreData
 
 struct ViewPaymentsView: View {
-    @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
-    
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \AdPayment.name, ascending: true)],
-        animation: .default)
-    private var payments: FetchedResults<AdPayment>
-    
-    @State private var selectedPayment: AdPayment?
-    @State private var showingEditDialog = false
+    @StateObject private var viewModel = ViewPaymentsViewModel()
     
     var body: some View {
         NavigationView {
             Group {
-                if payments.isEmpty {
+                if !viewModel.hasPayments {
                     VStack {
                         Image(systemName: "list.bullet.rectangle.portrait")
                             .font(.system(size: 60))
@@ -43,13 +35,12 @@ struct ViewPaymentsView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
                     List {
-                        ForEach(payments, id: \.id) { payment in
+                        ForEach(viewModel.payments, id: \.id) { payment in
                             PaymentRowView(payment: payment) {
-                                selectedPayment = payment
-                                showingEditDialog = true
+                                viewModel.selectPayment(payment)
                             }
                         }
-                        .onDelete(perform: deletePayments)
+                        .onDelete(perform: viewModel.deletePayments)
                     }
                 }
             }
@@ -62,29 +53,20 @@ struct ViewPaymentsView: View {
                     }
                 }
                 
-                if !payments.isEmpty {
+                if viewModel.hasPayments {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         EditButton()
                     }
                 }
             }
-            .sheet(isPresented: $showingEditDialog) {
-                if let payment = selectedPayment {
+            .sheet(isPresented: $viewModel.showingEditDialog) {
+                if let payment = viewModel.selectedPayment {
                     EditPaymentView(payment: payment)
-                        .environment(\.managedObjectContext, viewContext)
+                        .environment(\.managedObjectContext, viewModel.viewContext)
+                        .onDisappear {
+                            viewModel.fetchPayments() // Refresh data when edit dialog is dismissed
+                        }
                 }
-            }
-        }
-    }
-    
-    private func deletePayments(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { payments[$0] }.forEach(viewContext.delete)
-            
-            do {
-                try viewContext.save()
-            } catch {
-                // Handle the error appropriately
             }
         }
     }
@@ -121,5 +103,4 @@ struct PaymentRowView: View {
 
 #Preview {
     ViewPaymentsView()
-        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
