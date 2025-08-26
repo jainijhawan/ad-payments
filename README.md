@@ -13,14 +13,6 @@ A native iOS app built with SwiftUI that allows users to manage ad payment entri
 
 ## Architecture & Technical Decisions
 
-### Storage Choice: Core Data
-I chose Core Data over SQLite or UserDefaults for the following reasons:
-- **Scalability**: Better performance with larger datasets
-- **Relationships**: Future-ready for complex data relationships
-- **Memory Management**: Automatic object lifecycle management
-- **Threading**: Built-in support for background operations
-- **Migration**: Easier data model evolution
-
 ### App Architecture
 - **SwiftUI + MVVM**: Modern declarative UI with proper separation of concerns
 - **Feature-Based Organization**: Each feature is self-contained in its own folder
@@ -61,13 +53,6 @@ Jai Nijhawan- Ad Payments/
 - **Name Field**: Cannot be blank (trimmed for whitespace)
 - **URL Field**: Must start with `http://` or `https://` and be a valid URL format
 - **Error Handling**: User-friendly alerts for validation failures and save errors
-
-## UI Design Decisions
-- **Modern iOS Design**: Following Apple's Human Interface Guidelines
-- **Accessibility**: Proper semantic labels and navigation structure
-- **Consistent Styling**: Unified color scheme and typography
-- **Responsive Layout**: Adaptive spacing and sizing for different screen sizes
-- **Professional Appearance**: Clean, minimalist design with proper visual hierarchy
 
 ## Build Requirements
 - iOS 15.0+
