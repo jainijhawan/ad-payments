@@ -23,16 +23,47 @@ I chose Core Data over SQLite or UserDefaults for the following reasons:
 
 ### App Architecture
 - **SwiftUI + MVVM**: Modern declarative UI with proper separation of concerns
+- **Feature-Based Organization**: Each feature is self-contained in its own folder
 - **Environment Injection**: Core Data context passed through SwiftUI environment
 - **Modular Views**: Separate view files for different functionalities
 - **Centralized Persistence**: Single PersistenceController managing all Core Data operations
 
-### Key Components
-1. **ContentView**: Main screen with navigation and action buttons
-2. **AddPaymentView**: Form-based modal for creating new entries
-3. **ViewPaymentsView**: List interface with navigation to edit functionality
-4. **EditPaymentView**: Form-based modal for updating existing entries
-5. **PersistenceController**: Core Data stack management and operations
+### Project Structure
+```
+Jai Nijhawan- Ad Payments/
+├── Add Payment/
+│   ├── AddPaymentView.swift
+│   └── AddPaymentViewModel.swift
+├── View Payments/
+│   ├── ViewPaymentsView.swift
+│   └── ViewPaymentsViewModel.swift
+├── Edit Payment/
+│   ├── EditPaymentView.swift
+│   └── EditPaymentViewModel.swift
+├── Main/
+│   ├── ContentView.swift
+│   └── ContentViewModel.swift
+├── Services/
+│   └── PersistenceController.swift
+├── AdPayments.xcdatamodeld/
+├── Assets.xcassets/
+└── Jai_Nijhawan__Ad_PaymentsApp.swift
+```
+
+### Key Features by Folder
+- **Main/**: Contains the main screen with navigation and action buttons
+- **Add Payment/**: Form-based modal for creating new payment entries with validation
+- **View Payments/**: List interface showing all saved entries with navigation to edit
+- **Edit Payment/**: Form-based modal for updating existing payment entries
+- **Services/**: Core Data stack management and business logic operations
+
+### MVVM Architecture Benefits
+- **Separation of Concerns**: Business logic separated from UI code
+- **Testability**: ViewModels can be unit tested independently
+- **Reactive UI**: @Published properties automatically update the interface
+- **Async Operations**: Modern async/await pattern for database operations
+- **State Management**: Centralized state handling with loading and error states
+- **Maintainability**: Clear code organization and responsibilities
 
 ## Validation Rules
 - **Name Field**: Cannot be blank (trimmed for whitespace)
@@ -47,14 +78,16 @@ I chose Core Data over SQLite or UserDefaults for the following reasons:
 - **Professional Appearance**: Clean, minimalist design with proper visual hierarchy
 
 ## Time Spent
-**Estimated Time**: 2.5 hours
+**Total Time**: ~4 hours
 
 ### Breakdown:
 - **Planning & Setup** (30 minutes): Project analysis, architecture planning
 - **Core Data Implementation** (45 minutes): Model creation, persistence controller
 - **UI Development** (60 minutes): Main screen, Add/View/Edit dialogs
 - **Validation & Error Handling** (20 minutes): Input validation, user feedback
-- **Testing & Polish** (15 minutes): UI refinements, testing edge cases
+- **MVVM Refactoring** (90 minutes): Implementing ViewModels, async operations, state management
+- **Project Restructuring** (15 minutes): Feature-based folder organization
+- **Testing & Polish** (20 minutes): UI refinements, testing edge cases
 
 ## Limitations & Future Improvements
 
